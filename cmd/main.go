@@ -10,15 +10,19 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"warehouseWeb/internal/handler"
 	"warehouseWeb/internal/sql"
 	"warehouseWeb/pkg/srv/httpserver"
 )
 
 func main() {
+	//Initialize server with main handler
 	var srv httpserver.Server
-	fs := http.FileServer(http.Dir("./internal/frontend"))
+	http.HandleFunc("/", handler.Handler)
+	//fs := http.FileServer(http.Dir("./internal/frontend"))
+
 	go func() {
-		if err := srv.Run("80", fs); err != nil {
+		if err := srv.Run("80", nil); err != nil {
 			log.Fatalf("Error occured while running http server: %s", err.Error())
 		}
 	}()
@@ -38,7 +42,7 @@ func main() {
 		fmt.Println(version)
 	}
 
-	access, err := sql.GetAccess(db, "vizzcon", "vizzcon")
+	access, err := sql.GetAccessLogin(db, "vizzcon", "vizzcon")
 	if err != nil {
 		panic(err)
 	}

@@ -26,7 +26,7 @@ func GetDB() (*sql.DB, error) {
 	return db, nil
 }
 
-func GetAccess(db *sql.DB, login string, password string) (bool, error) {
+func GetAccessLogin(db *sql.DB, login string, password string) (bool, error) {
 	var condition bool
 	str := fmt.Sprintf("select * from CHECKLOGIN('%s', '%s')", login, password)
 	rows, err := db.Query(str)
