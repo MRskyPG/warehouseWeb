@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"log"
@@ -11,7 +10,6 @@ import (
 	"os/signal"
 	"syscall"
 	"warehouseWeb/internal/handler"
-	"warehouseWeb/internal/sql"
 	"warehouseWeb/pkg/srv/httpserver"
 )
 
@@ -26,31 +24,6 @@ func main() {
 			log.Fatalf("Error occured while running http server: %s", err.Error())
 		}
 	}()
-
-	db, err := sql.GetDB()
-	if err != nil {
-		panic("Didn't to Get Database.")
-	}
-
-	rows, err := db.Query("select login from workers")
-	if err != nil {
-		panic("Error. Database not found")
-	}
-	for rows.Next() {
-		var version string
-		_ = rows.Scan(&version)
-		fmt.Println(version)
-	}
-
-	access, err := sql.GetAccessLogin(db, "vizzcon", "vizzcon")
-	if err != nil {
-		panic(err)
-	}
-	if access {
-		fmt.Println("true")
-	} else {
-		fmt.Println("false")
-	}
 
 	//Graceful Shutdown
 	logrus.Print("Web-app Started")
