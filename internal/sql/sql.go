@@ -14,7 +14,7 @@ func GetDB() (*sql.DB, error) {
 	var db *sql.DB
 
 	//connStr := SetValuesForDB("postgres", "postgres", "postgres", "5432")
-	db, err = sql.Open("postgres", "user=postgres password=postgres dbname=postgres port=5432 sslmode=disable")
+	db, err = sql.Open("postgres", "user=postgres password=qwerty dbname=postgres port=5436 sslmode=disable")
 	if err != nil {
 		return nil, err
 	}
