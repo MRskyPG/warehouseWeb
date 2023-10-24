@@ -9,8 +9,8 @@
 Install Docker: <a href="https://www.docker.com/get-started/">Link</a>
 
 
-1) Первоначально для работы файлов миграции базы данных:
-
+1) Первоначально для работы файлов миграции базы данных:  
+<a href="https://www.freecodecamp.org/news/database-migration-golang-migrate/">Information</a>  
 Windows Powershell:
 ```
 scoop install migrate
