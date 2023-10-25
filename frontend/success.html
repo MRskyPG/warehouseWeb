@@ -2,9 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>База склада фирмы. Опции</title>
+    <link type="text/css"  rel="stylesheet" href="css/success.css">
 </head>
 <body>
-<h1>Login success</h1>
+<h1>Выберите опцию</h1>
+<form>
+<figure class="figure_buttons">
+    <table>
+        <tr>
+            <td>
+        <button formaction="/add">Добавление товара</button>
+            </td>
+            <td>
+        <button formaction="/presentation">Выдача товара</button>
+            </td>
+            <td>
+        <button formaction="/search">Поиск товара</button>
+            </td>
+            <td>
+        <button formaction="/delete">Списание товара</button>
+            </td>
+            <td>
+        <button formaction="/change_place">Изменение месторасположения товара</button>
+            </td>
+            <td>
+                <button formaction="/login">Выйти</button>
+            </td>
+    </tr>
+    </table>
+</figure>
+</form>
+
 </body>
 </html>

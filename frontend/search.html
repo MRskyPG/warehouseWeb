@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск товара</title>
+    <link type="text/css"  rel="stylesheet" href="css/success.css">
+</head>
+<body>
+<h3>Опции</h3>
+<form>
+    <figure class="figure_buttons">
+        <table>
+            <tr>
+                <td>
+                    <button formaction="/add">Добавление товара</button>
+                </td>
+                <td>
+                    <button formaction="/presentation">Выдача товара</button>
+                </td>
+                <td>
+                    <button formaction="/search" class="button_option">Поиск товара</button>
+                </td>
+                <td>
+                    <button formaction="/delete">Списание товара</button>
+                </td>
+                <td>
+                    <button formaction="/change_place">Изменение месторасположения товара</button>
+                </td>
+                <td>
+                    <button formaction="/login">Выйти</button>
+                </td>
+            </tr>
+        </table>
+    </figure>
+</form>
+
+<figure class="figure_add">
+    <form>
+        <table>
+            <tr>
+                <div>
+                    <td><label for="order_name"><b>Название товара</b></label></td>
+                    <td><input type="text" id="order_name" name="order_name"></td>
+                </div>
+            </tr>
+            <tr>
+                <div >
+                    <td><label for="name"><b>Имя заказчика</b></label></td>
+                    <td> <input type="text" id="name" name="name"></td>
+                </div>
+            </tr>
+            <tr>
+                <div >
+                    <td> <label for="surname"><b>Фамилия заказчика</b></label></td>
+                    <td><input type="text" id="surname" name="surname"></td>
+                </div>
+            </tr>
+            <tr>
+                <div >
+                    <td> <label for="email"><b>Эл. почта</b></label></td>
+                    <td><input type="email" id="email" name="email"></td>
+                </div>
+            </tr>
+            <tr>
+                <div>
+                    <td><label for="adress"><b>Адрес отправки</b></label></td>
+                    <td><input type="text" id="adress" name="adress"></td>
+                </div>
+            </tr>
+            <tr >
+                <div>
+                    <td > <button>Найти товар</button></td>
+                </div>
+            </tr>
+        </table>
+    </form>
+</figure>
+
+</body>
+</html>

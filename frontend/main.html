@@ -2,23 +2,29 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>A static page</title>
-    <link rel="stylesheet" href="css/main.css">
+    <title>Окно авторизации</title>
+    <style>{{.Style}}</style>
+    <script>
+        alert("Вы не авторизовались!");
+    </script>
 </head>
 <body>
+<h1 align="center">Авторизация работника склада фирмы</h1>
 <form action="/submit">
-
-    <div class="container">
-        <label class="uname" for="login"><b>Username</b></label>
-        <input type="text" placeholder="Enter Username" id="login" name="login" required>
-
-        <label class="psw" for="password"><b>Password</b></label>
-        <input type="password" id="password" placeholder="Enter Password" name="password" required>
-
-        <input type="submit" value="Submit">
-       <!-- <label>
-            <input type="checkbox" checked="checked" name="remember"> Remember me
-        </label> -->
+    <div class="container"  align="center">
+        <label class="uname" for="login"><b>Логин</b></label>
+        <input type="text" placeholder="Enter username" id="login" name="login" required>
+    </div>
+    <div class="container"  align="center">
+        <label class="psw" for="password"><b>Пароль</b></label>
+        <input type="password" id="password" placeholder="Enter password" name="password" required>
+    </div>
+    <div class="container" align="center">
+        <button>Авторизация</button>
+    </div>
+        <!-- <label>
+             <input type="checkbox" checked="checked" name="remember"> Remember me
+         </label> -->
     </div>
 
 </form>

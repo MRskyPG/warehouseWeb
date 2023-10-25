@@ -1,0 +1,41 @@
+.figure_buttons {
+    background: #b0e0e2;
+    padding: 20px;
+    display: block;
+    margin: 0 10px 10px 0;
+}
+
+
+.figure_add {
+    background:#7E9195;
+    padding: 20px;
+    display: block;
+    float: left;
+    margin: 0 10px 10px 0;
+    text-align: center;
+}
+
+button {
+    background-color: #f1f1f1;
+    color: black;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    height: 50px;
+}
+
+.button_option {
+    background-color: #7E9195;
+}
+
+input[type=text], [type=email] {
+    width: 200px;
+    height: 50px;
+    padding: 12px 20px;
+    margin: 0px auto 20px auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
