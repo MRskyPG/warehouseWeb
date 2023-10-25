@@ -40,3 +40,13 @@ func GetAccessLogin(db *sql.DB, login string, password string) (bool, error) {
 
 	return condition, nil
 }
+
+func AddOrderToDB(db *sql.DB, order_name string, name string, surname string, email string, adress string) (bool, error) {
+	str := fmt.Sprintf("select  insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
+	_, err := db.Query(str)
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}

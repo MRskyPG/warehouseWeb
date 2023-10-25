@@ -4,7 +4,6 @@ run:
 build:
 	go mod download
 	docker run --name warehouseWeb -e POSTGRES_PASSWORD=qwerty --rm -d -p 5436:5432 postgres
-	make migrate
 
 
 migrate:

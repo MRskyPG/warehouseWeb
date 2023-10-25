@@ -36,7 +36,13 @@ scoop install main/make
 ```
 3) Запуск впервые:
 ```
-make build && make run
+make build
+make migrate
+make run
+```
+Обычный запуск:
+```
+make run
 ```
 
 ---
