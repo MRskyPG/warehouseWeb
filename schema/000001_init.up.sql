@@ -1,3 +1,30 @@
+create table if not exists clients (
+                                       id serial PRIMARY KEY,
+                                       name text,
+                                       surname text,
+                                       email text
+);
+
+
+create table if not exists warehouse (
+                                         id_placement serial PRIMARY KEY,
+                                         product_id int default null
+);
+
+
+INSERT INTO warehouse (product_id)
+SELECT null
+FROM generate_series(1, 15) AS g (id);
+
+create table if not exists products (
+                                        id serial PRIMARY KEY,
+                                        id_placement int unique not null ,
+                                        id_product int not null,
+                                        product_name text,
+                                        registration_date date not null,
+                                        client_id int not null,
+                                        depart_address text);
+
 create table if not exists workers(
                                       user_id serial PRIMARY KEY,
                                       name varchar(20) not null,
@@ -5,12 +32,119 @@ create table if not exists workers(
     login varchar(20) not null unique,
     password varchar(20) not null
     );
-insert into workers (name, surname, login, password)
-VALUES ('andrei', 'degtyarev', 'aboba', 'aboba'),
-       ('mikhail', 'rogalsky', 'vizzcon', 'vizzcon');
 
-CREATE FUNCTION CHECKLOGIN(_login varchar(20), _password varchar(20))
-    RETURNS BOOLEAN
+
+create sequence if not exists prod_id_sequence
+increment 1
+minvalue 1
+start 1
+cycle;
+
+create sequence if not exists client_id_seq
+increment 1
+minvalue 1
+start 1
+cycle;
+
+
+--------------------------------------------------
+
+
+CREATE OR REPLACE FUNCTION GET_POSITION()
+    RETURNS integer AS $$
+BEGIN
+RETURN (
+    SELECT res FROM (
+                        select id_placement as res, ROW_NUMBER() OVER (ORDER BY id_placement) AS id from warehouse
+                        where product_id is null
+                    ) as data WHERE data.id = 1);
+END;
+$$ LANGUAGE plpgsql;
+
+create or replace function change_placement(id_prod int) returns bool as $$
+    declare
+pos int = get_position();
+begin
+        if (pos is not null)
+        then
+update warehouse
+set product_id = null where product_id = id_prod;
+update warehouse
+set product_id = id_prod where id_placement = pos;
+return true;
+else return false; -- not enough space in warehouse
+end if;
+end;
+    $$ language plpgsql;
+
+
+
+create or replace function get_id_product(prod_name text) returns integer as $$
+begin
+        if exists (select 1 from products where product_name = prod_name)
+        then
+            return (select id_product from products where product_name = prod_name);
+else
+            return nextval('prod_id_sequence');
+end if;
+end;
+$$ language plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION INSERT_PRODUCT(prod_name text, cl_name text, cl_surname text, dp_address text, _email text)
+    RETURNS BOOL AS $$
+        declare
+pos integer = get_position();
+            id_prod integer = get_id_product(prod_name);
+            cl_id int;
+            cur_id int = nextval('products_id_seq');
+BEGIN
+            if (pos is null)
+            then
+                return false;
+end if;
+            if (exists(select 1 from clients where name = cl_name and surname = cl_surname and clients.email = _email))
+            then
+                cl_id = nextval('client_id_seq');
+insert into clients values (cl_id, cl_name, cl_surname, _email);
+else cl_id = (select from clients as cl where cl.name = cl_name and cl.surname = cl_surname and cl.email = _email);
+end if;
+insert into products (id, id_placement, id_product, product_name, registration_date, client_id, depart_address)
+values (cur_id, pos, id_prod, prod_name, current_date, cl_id, dp_address);
+update warehouse
+set product_id = cur_id where id_placement = pos;
+return true;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE PROCEDURE remove_product(prod_id int)
+    AS $$
+        declare
+BEGIN
+delete from products as pd where pd.id = prod_id;
+update warehouse
+set product_id = null where warehouse.product_id = prod_id;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION search(id_prod int default -1, id_place int default -1,
+                                  prod_name text default 'not_exist', cl_name text default 'not_exist', cl_surname text default 'not_exist')
+    RETURNS table (id_uniq int, id_placement int, name text) AS $$
+BEGIN
+return query select pd.id, pd.id_placement, pd.product_name from (products as pd join clients as cl on pd.client_id = cl.id)
+                where (pd.id_product = id_prod or id_prod = -1 )and
+                      (pd.id_placement = id_place or id_place = -1) and
+                      (pd.product_name = prod_name or prod_name = 'not_exist') and
+                      (cl.name = cl_name or cl_name = 'not_exist') and
+                      (cl.surname = cl_surname or cl_surname = 'not_exist');
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE  FUNCTION CHECKLOGIN(_login varchar(20), _password varchar(20))
+  RETURNS BOOLEAN
 AS $func$
 SELECT EXISTS (
     SELECT 1
@@ -19,3 +153,6 @@ SELECT EXISTS (
       AND w.password = _password
 );
 $func$ LANGUAGE sql;
+
+INSERT INTO WORKERS (name, surname, login, password) VALUES ('andrew', 'degtyarev', 'andrew', 'andrew'), ('mikhail', 'rogalsky', 'vizzcon', 'vizzcon'),
+                                                            ('admin', 'admin', 'admin', 'admin');
