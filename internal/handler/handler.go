@@ -11,14 +11,22 @@ import (
 
 // After login - true, before - false
 var access_after_login = false
+
 func viewList(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
 		fileName := "frontend/list.html"
-		file_list, err := template.ParseFiles(fileName)
+		file_list, err := template.ParseFiles(fileName, "frontend/list2.html")
+		// t, err := template.ParseFiles("index.html", "header.html")
+		if err != nil {
+    		panic(err)
+		}
 		if err != nil {
 			fmt.Println("Error occurred when parsing html file.", err.Error())
 			return
 		}
+		// С помощью этого кода я помещаю list2.html в list.html, под видом template
+		// https://stackoverflow.com/questions/33984147/golang-embed-html-from-file
+		_ = file_list.ExecuteTemplate(w, fileName, nil)
 		err = file_list.Execute(w, nil)
 		if err != nil {
 			fmt.Println("Error occurred when executing file.", err.Error())
@@ -38,7 +46,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		loginSubmit(w, r)
 	case "/add":
 		addOrder(w, r)
-	case "/list":
+	case "/search":
 		viewList(w, r)
 	} 
 }
