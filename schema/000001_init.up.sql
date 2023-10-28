@@ -91,9 +91,9 @@ $$ language plpgsql;
 create or replace function is_not_full() returns boolean
     as $$
 begin
-        if (get_position() is null )
-        then return False;
-else return True;
+        if (get_position() is not null )
+        then return True;
+        else return False;
 end if;
 end;
     $$ language plpgsql;
@@ -111,11 +111,11 @@ BEGIN
             then
                 return;
 end if;
-            if (exists(select 1 from clients where name = cl_name and surname = cl_surname and clients.email = _email))
+            if (not exists(select 1 from clients where name = cl_name and surname = cl_surname and clients.email = _email))
             then
                 cl_id = nextval('client_id_seq');
 insert into clients values (cl_id, cl_name, cl_surname, _email);
-else cl_id = (select from clients as cl where cl.name = cl_name and cl.surname = cl_surname and cl.email = _email);
+else cl_id = (select cl.id from clients as cl where cl.name = cl_name and cl.surname = cl_surname and cl.email = _email);
 end if;
 insert into products (id, id_placement, id_product, product_name, registration_date, client_id, depart_address)
 values (cur_id, pos, id_prod, prod_name, current_date, cl_id, dp_address);

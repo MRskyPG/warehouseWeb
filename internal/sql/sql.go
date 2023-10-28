@@ -51,11 +51,11 @@ func AddOrderToDB(db *sql.DB, order_name string, name string, surname string, em
 	var try bool
 	_ = rows.Scan(&try)
 
-	if try == false {
+	if try == true {
 		return try, errors.New("Нет места на складе")
 	}
 
-	str := fmt.Sprintf("select  insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
+	str := fmt.Sprintf("call insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
 	obj, err := db.Exec(str)
 	if err != nil {
 		return false, err
