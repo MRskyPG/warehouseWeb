@@ -2,6 +2,7 @@ package sql
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 )
 
@@ -42,11 +43,24 @@ func GetAccessLogin(db *sql.DB, login string, password string) (bool, error) {
 }
 
 func AddOrderToDB(db *sql.DB, order_name string, name string, surname string, email string, adress string) (bool, error) {
-	str := fmt.Sprintf("select  insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
-	_, err := db.Query(str)
+	rows, err := db.Query("select is_not_full();")
+
 	if err != nil {
 		return false, err
 	}
+	var try bool
+	_ = rows.Scan(&try)
+
+	if try == false {
+		return try, errors.New("Нет места на складе")
+	}
+
+	str := fmt.Sprintf("select  insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
+	obj, err := db.Exec(str)
+	if err != nil {
+		return false, err
+	}
+	fmt.Println(obj.LastInsertId())
 
 	return true, nil
 }

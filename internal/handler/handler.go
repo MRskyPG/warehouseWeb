@@ -145,12 +145,15 @@ func addOrder(w http.ResponseWriter, r *http.Request) {
 		/*
 			TODO: ниже add переменную (bool) и какое-то действие сделать, например, вывести, что удалось вставить или нет
 		*/
-		_, err = sqlImport.AddOrderToDB(db, order_name, name, surname, email, adress)
-		if err != nil {
-			fmt.Println("Error occured when doing query to DB", err.Error())
+		if order_name != "" && name != "" && surname != "" && email != "" && adress != "" {
+			_, err = sqlImport.AddOrderToDB(db, order_name, name, surname, email, adress)
+			if err != nil {
+				fmt.Println("Error occured when doing query to DB", err.Error())
+				return
+			}
+		} else {
 			return
 		}
-
 	} else {
 		login(w, r)
 		fmt.Println("You are not authorized.")
