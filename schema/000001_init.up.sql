@@ -4,13 +4,11 @@ create table if not exists clients (
                                        surname text,
                                        email text
 );
-
-
 create table if not exists warehouse (
                                          id_placement serial PRIMARY KEY,
                                          product_id int default null
 );
-
+-- drop table warehouse cascade ;
 
 INSERT INTO warehouse (product_id)
 SELECT null
@@ -47,9 +45,6 @@ start 1
 cycle;
 
 
---------------------------------------------------
-
-
 CREATE OR REPLACE FUNCTION GET_POSITION()
     RETURNS integer AS $$
 BEGIN
@@ -77,6 +72,8 @@ end if;
 end;
     $$ language plpgsql;
 
+----------------------------------------------------------------------------
+
 
 
 create or replace function get_id_product(prod_name text) returns integer as $$
@@ -91,9 +88,19 @@ end;
 $$ language plpgsql;
 
 
+create or replace function is_not_full() returns boolean
+    as $$
+begin
+        if (get_position() is null )
+        then return False;
+else return True;
+end if;
+end;
+    $$ language plpgsql;
 
-CREATE OR REPLACE FUNCTION INSERT_PRODUCT(prod_name text, cl_name text, cl_surname text, dp_address text, _email text)
-    RETURNS BOOL AS $$
+
+CREATE OR REPLACE procedure INSERT_PRODUCT(prod_name text, cl_name text, cl_surname text, dp_address text, _email text)
+    AS $$
         declare
 pos integer = get_position();
             id_prod integer = get_id_product(prod_name);
@@ -102,7 +109,7 @@ pos integer = get_position();
 BEGIN
             if (pos is null)
             then
-                return false;
+                return;
 end if;
             if (exists(select 1 from clients where name = cl_name and surname = cl_surname and clients.email = _email))
             then
@@ -114,7 +121,6 @@ insert into products (id, id_placement, id_product, product_name, registration_d
 values (cur_id, pos, id_prod, prod_name, current_date, cl_id, dp_address);
 update warehouse
 set product_id = cur_id where id_placement = pos;
-return true;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -154,5 +160,7 @@ SELECT EXISTS (
 );
 $func$ LANGUAGE sql;
 
-INSERT INTO WORKERS (name, surname, login, password) VALUES ('andrew', 'degtyarev', 'andrew', 'andrew'), ('mikhail', 'rogalsky', 'vizzcon', 'vizzcon'),
-                                                            ('admin', 'admin', 'admin', 'admin');
+insert into workers (name, surname, login, password)
+VALUES ('andrei', 'degtyarev', 'aboba', 'aboba'),
+       ('mikhail', 'rogalsky', 'vizzcon', 'vizzcon'),
+       ('admin', 'admin', 'admin', 'admin');
