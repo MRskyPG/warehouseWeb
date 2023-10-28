@@ -11,6 +11,24 @@ import (
 
 // After login - true, before - false
 var access_after_login = false
+func viewList(w http.ResponseWriter, r *http.Request) {
+	if access_after_login {
+		fileName := "frontend/list.html"
+		file_list, err := template.ParseFiles(fileName)
+		if err != nil {
+			fmt.Println("Error occurred when parsing html file.", err.Error())
+			return
+		}
+		err = file_list.Execute(w, nil)
+		if err != nil {
+			fmt.Println("Error occurred when executing file.", err.Error())
+			return
+		}
+	} else {
+		login(w, r)
+		fmt.Println("You are not authorized.")
+	}
+}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -20,7 +38,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		loginSubmit(w, r)
 	case "/add":
 		addOrder(w, r)
-	}
+	case "/list":
+		viewList(w, r)
+	} 
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
