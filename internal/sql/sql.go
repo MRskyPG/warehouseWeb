@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	Utils "warehouseWeb/internal/searchStruct"
 )
 
 func SetValuesForDB(port string, user string, password string, dbname string) string {
@@ -86,13 +87,9 @@ func createSelectStr(order_name string, cl_name string, cl_surname string, email
 } 
 
 
-type searchRes struct {
-	id_uniq uint8
-	id_placement uint8
-	prod_name string
-}
 
-func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(uint8, uint8, string) {
+
+func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(*Utils.SearchResults) {
 
 	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)
 	fmt.Println(str)
@@ -100,18 +97,61 @@ func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, em
 
 	if err != nil {
 		fmt.Println("Error occurred when searching", err.Error())
-		return 0, 0, ""
+		return nil
 	}
 
-	var res searchRes
+	var id int
+	var place int
+	var name string
+
+	var res Utils.SearchRes
+	var arr Utils.SearchResults
 
 	defer rows.Close()
 	for rows.Next() {
-		err = rows.Scan(&res.id_uniq, &res.id_placement, &res.prod_name)
+		err = rows.Scan(&id, &place, &name)
 		if err != nil {
 			fmt.Println("Error occurred when scanning", err.Error())
-			return 0, 0, ""
+			return nil
 		}
+		res.SetIdUniq(id)
+		res.SetPlace(place)
+		res.SetName(name)
+		arr.Add(id, place, name)
 	}
-	return res.id_uniq, res.id_placement, res.prod_name
+	return &arr
 }
+
+// func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(*Utils.SearchRes) {
+
+// 	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)
+// 	fmt.Println(str)
+// 	rows, err := db.Query(str)
+
+// 	if err != nil {
+// 		fmt.Println("Error occurred when searching", err.Error())
+// 		return nil
+// 	}
+
+// 	var id int
+// 	var place int
+// 	var name string
+
+// 	var res Utils.SearchRes
+// 	var arr Utils.SearchResults
+
+// 	defer rows.Close()
+// 	for rows.Next() {
+// 		err = rows.Scan(&id, &place, &name)
+// 		if err != nil {
+// 			fmt.Println("Error occurred when scanning", err.Error())
+// 			return nil
+// 		}
+// 		res.SetIdUniq(id)
+// 		res.SetPlace(place)
+// 		res.SetName(name)
+// 		arr.Add(id, place, name)
+// 	}
+// 	return &res
+// 	// return res.id_uniq, res.id_placement, res.prod_name
+// }

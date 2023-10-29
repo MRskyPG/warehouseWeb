@@ -55,9 +55,9 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 		}
 
 
-		id_uniq, id_placement, prod_name := sqlImport.Search(db, order_name, name, surname, email, address)
+		res := sqlImport.Search(db, order_name, name, surname, email, address)
 
-		html_change.WriteList(listFileName, id_uniq, id_placement, prod_name)
+		html_change.WriteList(listFileName, res)
 
 	} else {
 		login(w, r)

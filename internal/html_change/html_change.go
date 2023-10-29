@@ -4,6 +4,7 @@ import (
     "fmt"
     "log"
     "os"
+	Utils "warehouseWeb/internal/searchStruct"
 )
 func deleteLastChar(s string) (string) {
 	sz := len(s)
@@ -14,8 +15,8 @@ func deleteLastChar(s string) (string) {
 }
 
 
-func WriteList(fileName string, id_uniq uint8, id_placement uint8, name string) {
-    f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
+func WriteList(fileName string, source *Utils.SearchResults) {
+	f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
     if err != nil {
 		fmt.Println("Error occurred when opening file.", err.Error())
 		return
@@ -24,24 +25,23 @@ func WriteList(fileName string, id_uniq uint8, id_placement uint8, name string) 
 	if err := os.Truncate(fileName, 0); err != nil {
 		log.Printf("Failed to truncate: %v", err)
 	}
-	
-	str := fmt.Sprintf("Name: %s id: %d placement_id %d", name, id_uniq, id_placement)
-
     defer f.Close()
-
+	
 	tabs := ""
-
 	_, err = f.WriteString(tabs + "<html>\n")
-    if err != nil {
-		fmt.Println("Error occurred when writing file.", err.Error())
-		return
-	}
 	tabs = tabs + "\t"
+
 	_, _ = f.WriteString(tabs + "<ol>\n")
 	tabs = tabs + "\t"
-    _, _ = f.WriteString(tabs + "<li> "+ str +" </li>\n")
+
+	for _, pp := range *source {
+		str := fmt.Sprintf("Name: %s id: %d placement_id %d", pp.Name(), pp.IdUniq(), pp.Place())
+		_, _ = f.WriteString(tabs + "<li> "+ str +" </li>\n")
+	}
+
 	tabs = deleteLastChar(tabs)
 	_, _ = f.WriteString(tabs + "</ol>\n")
+	
 	tabs = deleteLastChar(tabs)
 	_, _ = f.WriteString(tabs + "</html>\n")
 
