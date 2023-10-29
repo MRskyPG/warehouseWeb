@@ -137,17 +137,20 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE FUNCTION search(id_prod int default -1, id_place int default -1,
-                                  prod_name text default 'not_exist', cl_name text default 'not_exist', cl_surname text default 'not_exist')
-    RETURNS table (id_uniq int, id_placement int, name text) AS $$
-BEGIN
-return query select pd.id, pd.id_placement, pd.product_name from (products as pd join clients as cl on pd.client_id = cl.id)
+                                  prod_name text default 'not_exist', cl_name text default 'not_exist',
+                                  cl_surname text default 'not_exist', cl_email text default 'not_exist',
+                                  dp_address text default 'not_exist')
+    RETURNS table (id_uniq int, id_placement int, name text) 
+AS $$
+        select pd.id, pd.id_placement, pd.product_name from (products as pd join clients as cl on pd.client_id = cl.id)
                 where (pd.id_product = id_prod or id_prod = -1 )and
                       (pd.id_placement = id_place or id_place = -1) and
                       (pd.product_name = prod_name or prod_name = 'not_exist') and
                       (cl.name = cl_name or cl_name = 'not_exist') and
-                      (cl.surname = cl_surname or cl_surname = 'not_exist');
-END;
-$$ LANGUAGE plpgsql;
+                      (cl.surname = cl_surname or cl_surname = 'not_exist') and
+                      (cl.email = cl_email or cl_email = 'not_exist') and 
+                      (pd.depart_address = dp_address or dp_address = 'not_exist');
+$$ LANGUAGE SQL;
 
 CREATE OR REPLACE  FUNCTION CHECKLOGIN(_login varchar(20), _password varchar(20))
   RETURNS BOOLEAN

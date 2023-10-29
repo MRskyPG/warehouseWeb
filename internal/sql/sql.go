@@ -64,3 +64,54 @@ func AddOrderToDB(db *sql.DB, order_name string, name string, surname string, em
 
 	return true, nil
 }
+
+func correctInputArg(arg string, sql_argname string, need_delim bool) (string, bool) {
+	if arg != "" {
+		arg = sql_argname + ":=" + "'" + arg + "'"
+		if need_delim {
+			arg = ", " + arg
+		}
+		need_delim = true
+	}
+	return arg, need_delim
+} 
+func createSelectStr(order_name string, cl_name string, cl_surname string, email string, dp_address string) (string) {
+	var need_delim bool = false
+	order_name, need_delim = correctInputArg(order_name, "prod_name", need_delim)
+	cl_name, need_delim = correctInputArg(cl_name, "cl_name", need_delim)
+	cl_surname, need_delim = correctInputArg(cl_surname, "cl_surname", need_delim)
+	dp_address, need_delim = correctInputArg(dp_address, "dp_address", need_delim)
+	email, need_delim = correctInputArg(email, "cl_email", need_delim)
+	return fmt.Sprintf("select * from search(%s%s%s%s%s);", order_name, cl_name, cl_surname, dp_address, email)
+} 
+
+
+type searchRes struct {
+	id_uniq uint8
+	id_placement uint8
+	prod_name string
+}
+
+func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(uint8, uint8, string) {
+
+	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)
+	fmt.Println(str)
+	rows, err := db.Query(str)
+
+	if err != nil {
+		fmt.Println("Error occurred when searching", err.Error())
+		return 0, 0, ""
+	}
+
+	var res searchRes
+
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&res.id_uniq, &res.id_placement, &res.prod_name)
+		if err != nil {
+			fmt.Println("Error occurred when scanning", err.Error())
+			return 0, 0, ""
+		}
+	}
+	return res.id_uniq, res.id_placement, res.prod_name
+}
