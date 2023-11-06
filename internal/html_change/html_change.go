@@ -8,7 +8,7 @@ import (
 )
 func deleteLastChar(s string) (string) {
 	sz := len(s)
-	if sz > 0 && s[sz-1] == '+' {
+	if sz > 0 {
     	s = s[:sz-1]
 	}
 	return s
