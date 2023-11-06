@@ -14,6 +14,10 @@ import (
 // After login - true, before - false
 var access_after_login = false
 
+func buttonGive(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func viewList(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
 		order_name := r.FormValue("order_name")
@@ -49,8 +53,19 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error occurred when parsing html file.", err.Error())
 			return
 		}
+
+		style, err := os.ReadFile("frontend/css/success.css")
+		if err != nil {
+			fmt.Println("Error occured when reading CSS file.")
+			return
+		}
+
+		tmplData := struct {
+			Style template.CSS
+		}{Style: template.CSS(style)}
+
 		_ = file_list.ExecuteTemplate(w, fileName, nil)
-		err = file_list.Execute(w, nil)
+		err = file_list.Execute(w, tmplData)
 		if err != nil {
 			fmt.Println("Error occurred when executing file.", err.Error())
 			return
@@ -72,6 +87,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		addOrder(w, r)
 	case "/search":
 		viewList(w, r)
+	case "/buttonGive":
+		buttonGive(w, r)
 	}
 }
 
