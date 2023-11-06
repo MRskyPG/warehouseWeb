@@ -7,12 +7,9 @@ import (
 	"net/http"
 	"os"
 	"warehouseWeb/internal/html_change"
+	"warehouseWeb/internal/searchStruct"
 	sqlImport "warehouseWeb/internal/sql"
 )
-
-
-
-
 
 // After login - true, before - false
 var access_after_login = false
@@ -32,32 +29,32 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-
-
 		fileName := "frontend/search.html"
 		listFileName := "frontend/list.html"
+		// С помощью этого кода я помещаю list.html в search.html, под видом template
+		// https://stackoverflow.com/questions/33984147/golang-embed-html-from-file
+
+		var res *searchStruct.SearchResults
+		if order_name != "" || name != "" || surname != "" || email != "" || address != "" {
+			res = sqlImport.Search(db, order_name, name, surname, email, address)
+		} else {
+			res = searchStruct.New()
+
+		}
+
+		html_change.WriteList(listFileName, res)
 		file_list, err := template.ParseFiles(fileName, listFileName)
 		// t, err := template.ParseFiles("index.html", "header.html")
-		if err != nil {
-    		panic(err)
-		}
 		if err != nil {
 			fmt.Println("Error occurred when parsing html file.", err.Error())
 			return
 		}
-		// С помощью этого кода я помещаю list.html в search.html, под видом template
-		// https://stackoverflow.com/questions/33984147/golang-embed-html-from-file
 		_ = file_list.ExecuteTemplate(w, fileName, nil)
 		err = file_list.Execute(w, nil)
 		if err != nil {
 			fmt.Println("Error occurred when executing file.", err.Error())
 			return
 		}
-
-
-		res := sqlImport.Search(db, order_name, name, surname, email, address)
-
-		html_change.WriteList(listFileName, res)
 
 	} else {
 		login(w, r)
@@ -75,7 +72,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		addOrder(w, r)
 	case "/search":
 		viewList(w, r)
-	} 
+	}
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
