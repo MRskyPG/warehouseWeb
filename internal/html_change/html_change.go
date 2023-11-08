@@ -15,6 +15,28 @@ func deleteLastChar(s string) string {
 	return s
 }
 
+func WriteListNotFound(fileName string, source *Utils.SearchResults) {
+	f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
+	if err != nil {
+		fmt.Println("Error occurred when opening file.", err.Error())
+		return
+	}
+
+	if err := os.Truncate(fileName, 0); err != nil {
+		log.Printf("Failed to truncate: %v", err)
+	}
+	defer f.Close()
+
+	tabs := ""
+	_, err = f.WriteString(tabs + "<html>\n")
+	tabs = tabs + "\t"
+
+	_, _ = f.WriteString(tabs + "<h1>Товары не найдены.</h1>\n")
+
+	tabs = deleteLastChar(tabs)
+	_, _ = f.WriteString(tabs + "</html>\n")
+}
+
 func WriteList(fileName string, source *Utils.SearchResults) {
 	f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
 	if err != nil {

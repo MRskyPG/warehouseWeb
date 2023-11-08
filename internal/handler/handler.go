@@ -11,6 +11,14 @@ import (
 	sqlImport "warehouseWeb/internal/sql"
 )
 
+type Order struct {
+	order_name string
+	name       string
+	surname    string
+	email      string
+	adress     string
+}
+
 // After login - true, before - false
 var access_after_login = false
 
@@ -20,11 +28,12 @@ func buttonGive(w http.ResponseWriter, r *http.Request) {
 
 func viewList(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
-		order_name := r.FormValue("order_name")
-		name := r.FormValue("name")
-		surname := r.FormValue("surname")
-		email := r.FormValue("email")
-		address := r.FormValue("adress")
+		var order Order
+		order.order_name = r.FormValue("order_name")
+		order.name = r.FormValue("name")
+		order.surname = r.FormValue("surname")
+		order.email = r.FormValue("email")
+		order.adress = r.FormValue("adress")
 
 		var db *sql.DB
 		db, err := sqlImport.GetDB()
@@ -39,14 +48,24 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 		// https://stackoverflow.com/questions/33984147/golang-embed-html-from-file
 
 		var res *searchStruct.SearchResults
-		if order_name != "" || name != "" || surname != "" || email != "" || address != "" {
-			res = sqlImport.Search(db, order_name, name, surname, email, address)
+		if order.order_name != "" || order.name != "" || order.surname != "" || order.email != "" || order.adress != "" {
+			empty := true
+			res = sqlImport.Search(db, order.order_name, order.name, order.surname, order.email, order.adress)
+			if *res == nil {
+				empty = false
+			}
+			if !empty {
+				html_change.WriteListNotFound(listFileName, res)
+				fmt.Println("Товар не найден.")
+			} else {
+				html_change.WriteList(listFileName, res)
+			}
 		} else {
 			res = searchStruct.New()
-
+			html_change.WriteList(listFileName, res)
 		}
 
-		html_change.WriteList(listFileName, res)
+		//html_change.WriteList(listFileName, res)
 		file_list, err := template.ParseFiles(fileName, listFileName)
 		// t, err := template.ParseFiles("index.html", "header.html")
 		if err != nil {
