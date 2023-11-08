@@ -124,10 +124,10 @@ func RemoveItem(db *sql.DB, id string)(bool, error) {
 	if _, err := fmt.Sscanf(id, "%d", &int_id); err != nil {
     	return false, err
 	}
-	str := fmt.Sprintf("call remove_product(%d);", int_id)
+	str := fmt.Sprintf("select remove_product(%d);", int_id)
 	// сделать возвращение true / false из remove product
 	// true если элемент удален, false иначе
-	_, _ = db.Exec(str)
+	_, _ = db.Query(str)
 	return true, nil
 }
 
