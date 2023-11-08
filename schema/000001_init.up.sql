@@ -167,3 +167,7 @@ insert into workers (name, surname, login, password)
 VALUES ('andrei', 'degtyarev', 'aboba', 'aboba'),
        ('mikhail', 'rogalsky', 'vizzcon', 'vizzcon'),
        ('admin', 'admin', 'admin', 'admin');
+
+call insert_product('Яблоки', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
+call insert_product('Набор инструментов', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
+call insert_product('Велосипед', 'Андрей', 'Дегтярев', 'ул.Карла Маркса 40, Новосибирск', 'other_example@gmail.com');
