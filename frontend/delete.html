@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Списание товара</title>
+    <style>{{.Style}}</style>
+</head>
+<body>
+<h3>Опции</h3>
+<form>
+    <figure class="figure_buttons">
+        <table>
+            <tr>
+                <td>
+                    <button formaction="/add" >Добавление товара</button>
+                </td>
+                <td>
+                    <button formaction="/search">Выдача товара</button>
+                </td>
+                <td>
+                    <button formaction="/search">Поиск товара</button>
+                </td>
+                <td>
+                    <button formaction="/delete" class="button_option">Списание товара</button>
+                </td>
+                <td>
+                    <button formaction="/search">Изменение месторасположения товара</button>
+                </td>
+                <td>
+                    <button formaction="/login">Выйти</button>
+                </td>
+            </tr>
+        </table>
+    </figure>
+</form>
+
+<figure class="figure_add">
+    <form>
+        <table>
+            <tr>
+                <div>
+                    <td><label for="date"><b>Выберите дату:</b></label></td>
+                    <td><input type="date" id="date" name="date" required></td>
+                </div>
+            </tr>
+            <tr >
+                <div>
+                    <td > <button>Найти товары, доступные для списания</button></td>
+                </div>
+            </tr>
+        </table>
+    </form>
+</figure>
+
+</body>
+</html>
