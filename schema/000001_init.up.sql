@@ -125,15 +125,36 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE PROCEDURE remove_product(prod_id int)
+CREATE OR REPLACE function remove_product(prod_id int) returns bool
     AS $$
         declare
 BEGIN
 delete from products as pd where pd.id = prod_id;
 update warehouse
 set product_id = null where warehouse.product_id = prod_id;
+return True;
 END;
 $$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE PROCEDURE delete_products_expired(expire_date date)
+    AS $$
+        declare
+BEGIN
+select remove_product(id) from products where expire_date - interval '1 month' >= registration_date;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE function select_products_expired(expire_date date) RETURNS table (id_uniq int, id_placement int, name text) 
+    AS $$
+        declare
+BEGIN
+select pd.id, pd.id_placement, pd.product_name from products where expire_date - interval '1 month' >= registration_date;
+END;
+$$ LANGUAGE plpgsql;
+
+
+
 
 
 CREATE OR REPLACE FUNCTION search(id_prod int default -1, id_place int default -1,
