@@ -137,14 +137,6 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE PROCEDURE delete_products_expired(expire_date date)
-    AS $$
-        declare
-BEGIN
-select remove_product(id) from products where ((expire_date - interval '1 month') >= registration_date);
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE function select_products_expired(expire_date date) RETURNS table (id_uniq int, id_placement int, name text) 
     AS $$
 select pd.id, pd.id_placement, pd.product_name from products as pd where ((expire_date - interval '1 month') >= registration_date);
