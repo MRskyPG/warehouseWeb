@@ -1,4 +1,4 @@
- <html>
+<html>
 <script type="text/javascript">
 			$(document).ready(function() {
 				$("#buttonGive").on('click', function() {
