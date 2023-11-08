@@ -15,16 +15,16 @@
                     <button formaction="/add" class="button_option">Добавление товара</button>
                 </td>
                 <td>
-                    <button formaction="/presentation">Выдача товара</button>
+                    <button formaction="/search">Выдача товара</button>
                 </td>
                 <td>
                     <button formaction="/search">Поиск товара</button>
                 </td>
                 <td>
-                    <button formaction="/delete">Списание товара</button>
+                    <button formaction="/search">Списание товара</button>
                 </td>
                 <td>
-                    <button formaction="/change_place">Изменение месторасположения товара</button>
+                    <button formaction="/search">Изменение месторасположения товара</button>
                 </td>
                 <td>
                     <button formaction="/login">Выйти</button>
@@ -40,31 +40,31 @@
         <tr>
     <div>
         <td><label for="order_name"><b>Название товара</b></label></td>
-        <td><input type="text" id="order_name" name="order_name" required></td>
+        <td><input type="text" id="order_name" name="order_name" required pattern="^[А-Яа-яЁё\s]+$" placeholder="На русском языке"></td>
     </div>
         </tr>
         <tr>
     <div >
         <td><label for="name"><b>Имя заказчика</b></label></td>
-       <td> <input type="text" id="name" name="name" required></td>
+       <td> <input type="text" id="name" name="name" required pattern="^[А-Яа-яЁё\s]+$" placeholder="На русском языке"></td>
     </div>
         </tr>
         <tr>
     <div >
        <td> <label for="surname"><b>Фамилия заказчика</b></label></td>
-        <td><input type="text" id="surname" name="surname" required></td>
+        <td><input type="text" id="surname" name="surname" required pattern="^[А-Яа-яЁё\s]+$" placeholder="На русском языке"></td>
     </div>
         </tr>
         <tr>
     <div >
         <td> <label for="email"><b>Эл. почта</b></label></td>
-        <td><input type="email" id="email" name="email" required></td>
+        <td><input type="email" id="email" name="email" required placeholder="example@gmail.com"></td>
     </div>
         </tr>
         <tr>
     <div>
         <td><label for="adress"><b>Адрес отправки</b></label></td>
-        <td><input type="text" id="adress" name="adress" required></td>
+        <td><input type="text" id="adress" name="adress" required pattern="^[0-9А-Яа-яЁё\s\.]+$" placeholder="Символы: а-я, точка, 0-9"></td>
     </div>
         </tr>
         <tr >

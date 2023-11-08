@@ -57,11 +57,10 @@ func AddOrderToDB(db *sql.DB, order_name string, name string, surname string, em
 	}
 
 	str := fmt.Sprintf("call insert_product('%s', '%s', '%s', '%s', '%s');", order_name, name, surname, adress, email)
-	obj, err := db.Exec(str)
+	_, err = db.Exec(str)
 	if err != nil {
 		return false, err
 	}
-	fmt.Println(obj.LastInsertId())
 
 	return true, nil
 }
@@ -75,8 +74,8 @@ func correctInputArg(arg string, sql_argname string, need_delim bool) (string, b
 		need_delim = true
 	}
 	return arg, need_delim
-} 
-func createSelectStr(order_name string, cl_name string, cl_surname string, email string, dp_address string) (string) {
+}
+func createSelectStr(order_name string, cl_name string, cl_surname string, email string, dp_address string) string {
 	var need_delim bool = false
 	order_name, need_delim = correctInputArg(order_name, "prod_name", need_delim)
 	cl_name, need_delim = correctInputArg(cl_name, "cl_name", need_delim)
@@ -84,12 +83,9 @@ func createSelectStr(order_name string, cl_name string, cl_surname string, email
 	dp_address, need_delim = correctInputArg(dp_address, "dp_address", need_delim)
 	email, need_delim = correctInputArg(email, "cl_email", need_delim)
 	return fmt.Sprintf("select * from search(%s%s%s%s%s);", order_name, cl_name, cl_surname, dp_address, email)
-} 
+}
 
-
-
-
-func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(*Utils.SearchResults) {
+func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string) *Utils.SearchResults {
 
 	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)
 	fmt.Println(str)
