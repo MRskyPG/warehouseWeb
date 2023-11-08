@@ -60,18 +60,18 @@ create or replace function change_placement(id_prod int) returns int as $$
     declare
 pos int = get_position();
 begin
-        if (pos is not null)
-        then
-        update warehouse
+if (pos is not null)
+then
+update warehouse
 set product_id = null where product_id = id_prod;
 update products
-set product_id = id_prod where id_placement = pos;
+set id_placement = pos where id = id_prod;
 return pos;
-else return -1; -- not enough space in warehouse
+else
+return -1;
 end if;
 end;
     $$ language plpgsql;
-
 ----------------------------------------------------------------------------
 
 
@@ -141,17 +141,14 @@ CREATE OR REPLACE PROCEDURE delete_products_expired(expire_date date)
     AS $$
         declare
 BEGIN
-select remove_product(id) from products where expire_date - interval '1 month' >= registration_date;
+select remove_product(id) from products where ((expire_date - interval '1 month') >= registration_date);
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE function select_products_expired(expire_date date) RETURNS table (id_uniq int, id_placement int, name text) 
     AS $$
-        declare
-BEGIN
-select pd.id, pd.id_placement, pd.product_name from products where expire_date - interval '1 month' >= registration_date;
-END;
-$$ LANGUAGE plpgsql;
+select pd.id, pd.id_placement, pd.product_name from products as pd where ((expire_date - interval '1 month') >= registration_date);
+$$ LANGUAGE sql;
 
 
 

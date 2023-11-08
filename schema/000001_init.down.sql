@@ -7,10 +7,11 @@ DROP function get_id_product(prod_name text);
 DROP function change_placement(id_prod int);
 DROP FUNCTION GET_POSITION();
 drop function is_not_full();
+DROP PROCEDURE delete_products_expired(expire_date date);
+DROP function select_products_expired(expire_date date);
 DROP sequence client_id_seq;
 DROP SEQUENCE prod_id_sequence;
 DROP table workers cascade;
 DROP table clients cascade;
 DROP table warehouse cascade;
 DROP table products cascade;
-

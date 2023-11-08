@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"warehouseWeb/internal/html_change"
 	Utils "warehouseWeb/internal/searchStruct"
 )
 
@@ -118,11 +119,11 @@ func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, em
 	return &arr
 }
 
-func RemoveItem(db *sql.DB, id string)(bool, error) {
+func RemoveItem(db *sql.DB, id string) (bool, error) {
 
 	var int_id int
 	if _, err := fmt.Sscanf(id, "%d", &int_id); err != nil {
-    	return false, err
+		return false, err
 	}
 	str := fmt.Sprintf("select remove_product(%d);", int_id)
 	// сделать возвращение true / false из remove product
@@ -131,36 +132,57 @@ func RemoveItem(db *sql.DB, id string)(bool, error) {
 	return true, nil
 }
 
-// func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(*Utils.SearchRes) {
+func ListOfExpiredOrders(db *sql.DB, date string) *Utils.SearchResults {
+	str := fmt.Sprintf("select * from select_products_expired('%s');", date)
+	rows, err := db.Query(str)
+	if err != nil {
+		fmt.Println("Error occurred when searching", err.Error())
+		return nil
+	}
+	var id int
+	var place int
+	var name string
 
-// 	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)
-// 	fmt.Println(str)
-// 	rows, err := db.Query(str)
+	var res Utils.SearchRes
+	var arr Utils.SearchResults
 
-// 	if err != nil {
-// 		fmt.Println("Error occurred when searching", err.Error())
-// 		return nil
-// 	}
+	defer rows.Close()
+	for rows.Next() {
+		err = rows.Scan(&id, &place, &name)
+		if err != nil {
+			fmt.Println("Error occurred when scanning", err.Error())
+			return nil
+		}
+		str = fmt.Sprintf("select remove_product('%d');", id)
+		_, _ = db.Query(str)
+		res.SetIdUniq(id)
+		res.SetPlace(place)
+		res.SetName(name)
+		arr.Add(id, place, name)
+	}
+	return &arr
+}
 
-// 	var id int
-// 	var place int
-// 	var name string
+func ChangePlacement(db *sql.DB, id string) (bool, error) {
 
-// 	var res Utils.SearchRes
-// 	var arr Utils.SearchResults
-
-// 	defer rows.Close()
-// 	for rows.Next() {
-// 		err = rows.Scan(&id, &place, &name)
-// 		if err != nil {
-// 			fmt.Println("Error occurred when scanning", err.Error())
-// 			return nil
-// 		}
-// 		res.SetIdUniq(id)
-// 		res.SetPlace(place)
-// 		res.SetName(name)
-// 		arr.Add(id, place, name)
-// 	}
-// 	return &res
-// 	// return res.id_uniq, res.id_placement, res.prod_name
-// }
+	var int_id int
+	if _, err := fmt.Sscanf(id, "%d", &int_id); err != nil {
+		return false, err
+	}
+	str := fmt.Sprintf("select change_placement(%d);", int_id)
+	// сделать возвращение true / false из remove product
+	// true если элемент удален, false иначе
+	rows, _ := db.Query(str)
+	for rows.Next() {
+		var id int
+		err := rows.Scan(&id)
+		if err != nil {
+			return false, err
+		}
+		if id == -1 {
+			html_change.WriteListChangePlaceError("frontend/list.html")
+			break
+		}
+	}
+	return true, nil
+}

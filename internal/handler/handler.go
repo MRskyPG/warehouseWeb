@@ -94,18 +94,26 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 
 func deleteOrder(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
-
-		//var db *sql.DB
-		//db, err := sqlImport.GetDB()
-		//if err != nil {
-		//	fmt.Println("Error occurred while getting access to database", err.Error())
-		//	return
-		//}
+		date := r.FormValue("date")
+		var db *sql.DB
+		db, err := sqlImport.GetDB()
+		if err != nil {
+			fmt.Println("Error occurred while getting access to database", err.Error())
+			return
+		}
+		var res *searchStruct.SearchResults
+		listFileName := "frontend/list.html"
+		if date != "" {
+			res = sqlImport.ListOfExpiredOrders(db, date)
+			html_change.WriteListExpired(listFileName, res)
+		} else {
+			res = searchStruct.New()
+			html_change.WriteListExpiredNotFound(listFileName, res)
+		}
 
 		fileName := "frontend/delete.html"
 
-		//html_change.WriteList(listFileName, res)
-		file_list, err := template.ParseFiles(fileName)
+		file_list, err := template.ParseFiles(fileName, listFileName)
 		// t, err := template.ParseFiles("index.html", "header.html")
 		if err != nil {
 			fmt.Println("Error occurred when parsing html file.", err.Error())
@@ -309,5 +317,18 @@ func HandleRemove(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("remove\n")
 }
 func HandleChange(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("change\n")
+	params := r.URL.Query()
+	var db *sql.DB
+	db, err := sqlImport.GetDB()
+	if err != nil {
+		fmt.Println("Error occurred while getting access to database", err.Error())
+		return
+	}
+	// 1 param - удалилась ли запись
+	// 2 param - ошибка
+	_, err = sqlImport.ChangePlacement(db, params.Get("id"))
+	if err != nil {
+		fmt.Println("Error occurred while removing item from database", err.Error())
+		return
+	}
 }
