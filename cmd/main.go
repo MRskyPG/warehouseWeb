@@ -17,6 +17,10 @@ func main() {
 	//Initialize server with main handler
 	var srv httpserver.Server
 	http.HandleFunc("/", handler.Handler)
+	// initialize server - user interactions
+	http.HandleFunc("/giveItem", handler.HandleGive)
+	http.HandleFunc("/removeItem", handler.HandleRemove)
+	http.HandleFunc("/changeItemPlacement", handler.HandleChange)
 	//fs := http.FileServer(http.Dir("./internal/frontend"))
 
 	go func() {

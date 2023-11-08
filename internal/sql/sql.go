@@ -122,6 +122,19 @@ func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, em
 	return &arr
 }
 
+func RemoveItem(db *sql.DB, id string)(bool, error) {
+
+	var int_id int
+	if _, err := fmt.Sscanf(id, "%d", &int_id); err != nil {
+    	return false, err
+	}
+	str := fmt.Sprintf("call remove_product(%d);", int_id)
+	// сделать возвращение true / false из remove product
+	// true если элемент удален, false иначе
+	_, _ = db.Exec(str)
+	return true, nil
+}
+
 // func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, email string, dp_address string)(*Utils.SearchRes) {
 
 // 	str := createSelectStr(order_name, cl_name, cl_surname, email, dp_address)

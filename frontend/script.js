@@ -1,5 +1,4 @@
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><script type="text/javascript">
+<script type="text/javascript">
 			$(document).ready(function() {
 				$("#buttonGive").on('click', function() {
 					var id = $("#buttonGive").val();
@@ -44,18 +43,3 @@
 				});
 			});
 </script>
-	<ol>
-		<form>
-			<table>
-				<tr>
-				<td>
-				<li> Name: MLP id: 2 placement_id 2 </li>
-				</td>
-				<td><button id="buttonGive"type="submit" value="2">Выдать товар</button>				</td>
-				<td><button id="buttonRemove"type="submit" value="2">Списать товар</button>				</td>
-				<td><button id="buttonChangePlacement"type="submit" value="2">Изменить местоположение товара</button>				</td>
-				</tr>
-			</table>
-		</form>
-	</ol>
-</html>

@@ -2,8 +2,9 @@ package html_change
 
 import (
 	"fmt"
-	"log"
 	"os"
+	"io"
+	"strconv"
 	Utils "warehouseWeb/internal/searchStruct"
 )
 
@@ -15,20 +16,50 @@ func deleteLastChar(s string) string {
 	return s
 }
 
+func copy(source *os.File, destination *os.File)(error) {
+	buf := make([]byte, 1024)
+        for {
+                n, err := source.Read(buf)
+				if err != nil && err != io.EOF {
+					return err
+				}
+                if n == 0 {
+                        break
+                }
+
+                if _, err := destination.Write(buf[:n]); err != nil {
+                        return err
+                }
+        }
+		return nil
+}
+
 func WriteList(fileName string, source *Utils.SearchResults) {
-	f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
+	f, err := os.OpenFile(fileName, os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Println("Error occurred when opening file.", err.Error())
 		return
 	}
-
+	script, err := os.Open("frontend/script.js")
+	if err != nil {
+		fmt.Println("Error occurred when opening script file.", err.Error())
+		return
+	}
 	if err := os.Truncate(fileName, 0); err != nil {
-		log.Printf("Failed to truncate: %v", err)
+		fmt.Println("Error occurred when truncate file.", err.Error())
+		return
 	}
 	defer f.Close()
 
 	tabs := ""
 	_, err = f.WriteString(tabs + "<html>\n")
+	_, err = f.WriteString(tabs + "<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js\"></script>")	
+	if err := copy(script, f); err != nil {
+		fmt.Println("Error occurred when copy script ", err.Error())
+		return
+	}
+	_, err = f.WriteString("\n")
+
 	tabs = tabs + "\t"
 
 	_, _ = f.WriteString(tabs + "<ol>\n")
@@ -56,9 +87,9 @@ func createTable(f *os.File, source *Utils.SearchResults, tabs string) {
 		str := fmt.Sprintf("Name: %s id: %d placement_id %d", pp.Name(), pp.IdUniq(), pp.Place())
 		_, _ = f.WriteString(tabs + "<li> " + str + " </li>\n")
 		_, _ = f.WriteString(tabs + "</td>\n")
-		addButtons(f, tabs, "Выдать товар", "\"/buttonGive\"")
-		addButtons(f, tabs, "Списать товар", "")
-		addButtons(f, tabs, "Изменить местоположение товара", "")
+		addButtons(f, tabs, "Выдать товар", "\"buttonGive\"", pp.IdUniq())
+		addButtons(f, tabs, "Списать товар", "\"buttonRemove\"", pp.IdUniq())
+		addButtons(f, tabs, "Изменить местоположение товара", "\"buttonChangePlacement\"", pp.IdUniq())
 		_, _ = f.WriteString(tabs + "</tr>\n")
 	}
 
@@ -69,8 +100,8 @@ func createTable(f *os.File, source *Utils.SearchResults, tabs string) {
 
 }
 
-func addButtons(f *os.File, tabs string, nameButton string, formaction string) {
+func addButtons(f *os.File, tabs string, nameButton string, id string, id_uniq int) {
 	_, _ = f.WriteString(tabs + "<td>")
-	_, _ = f.WriteString("<button" + " formaction=" + formaction + " >" + nameButton + "</button>")
+	_, _ = f.WriteString("<button id=" + id + "type=\"submit\" value=\"" + strconv.Itoa(id_uniq) + "\">" + nameButton + "</button>")
 	_, _ = f.WriteString(tabs + "</td>\n")
 }
