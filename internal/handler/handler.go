@@ -245,6 +245,7 @@ func HandleGive(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	var db *sql.DB
 	db, err := sqlImport.GetDB()
+	fmt.Print(params.Get("id"))
 	if err != nil {
 		fmt.Println("Error occurred while getting access to database", err.Error())
 		return

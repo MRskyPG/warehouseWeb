@@ -124,6 +124,6 @@ func createTable(f *os.File, source *Utils.SearchResults, tabs string) {
 
 func addButtons(f *os.File, tabs string, nameButton string, id string, id_uniq int) {
 	_, _ = f.WriteString(tabs + "<td>")
-	_, _ = f.WriteString("<button id=" + id + "type=\"submit\" value=\"" + strconv.Itoa(id_uniq) + "\">" + nameButton + "</button>")
+	_, _ = f.WriteString("<button class=" + id + " type=\"submit\" value=\"" + strconv.Itoa(id_uniq) + "\">" + nameButton + "</button>")
 	_, _ = f.WriteString(tabs + "</td>\n")
 }

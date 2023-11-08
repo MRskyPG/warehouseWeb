@@ -1,7 +1,7 @@
 <script type="text/javascript">
 			$(document).ready(function() {
-				$("#buttonGive").on('click', function() {
-					var id = $("#buttonGive").val();
+				$('.buttonGive').on('click', function() {
+					var id = $(this).val();
 					$.ajax({
 						data:{'id':id},
 						url: "http://localhost/giveItem",
@@ -15,8 +15,8 @@
 </script>
 <script type="text/javascript">
 			$(document).ready(function() {
-				$("#buttonRemove").on('click', function() {
-					var id = $("#buttonRemove").val();
+				$(".buttonRemove").on('click', function() {
+					var id = $(this).val();
 					$.ajax({
 						data:{'id':id},
 						url: "http://localhost/removeItem",
@@ -30,8 +30,8 @@
 </script>
 <script type="text/javascript">
 			$(document).ready(function() {
-				$("#buttonChangePlacement").on('click', function() {
-					var id = $("#buttonChangePlacement").val();
+				$(".buttonChangePlacement).on('click', function() {
+					var id = $(this).val();
 					$.ajax({
 						data:{'id':id},
 						url: "http://localhost/changeItemPlacement",

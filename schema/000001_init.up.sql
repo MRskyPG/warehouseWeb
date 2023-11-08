@@ -56,18 +56,18 @@ RETURN (
 END;
 $$ LANGUAGE plpgsql;
 
-create or replace function change_placement(id_prod int) returns bool as $$
+create or replace function change_placement(id_prod int) returns int as $$
     declare
 pos int = get_position();
 begin
         if (pos is not null)
         then
-update warehouse
+        update warehouse
 set product_id = null where product_id = id_prod;
-update warehouse
+update products
 set product_id = id_prod where id_placement = pos;
-return true;
-else return false; -- not enough space in warehouse
+return pos;
+else return -1; -- not enough space in warehouse
 end if;
 end;
     $$ language plpgsql;
@@ -170,4 +170,5 @@ VALUES ('andrei', 'degtyarev', 'aboba', 'aboba'),
 
 call insert_product('Яблоки', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
 call insert_product('Набор инструментов', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
+call insert_product('Перфоратор', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
 call insert_product('Велосипед', 'Андрей', 'Дегтярев', 'ул.Карла Маркса 40, Новосибирск', 'other_example@gmail.com');

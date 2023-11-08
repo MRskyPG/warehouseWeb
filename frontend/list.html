@@ -1,8 +1,8 @@
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><script type="text/javascript">
 			$(document).ready(function() {
-				$("#buttonGive").on('click', function() {
-					var id = $("#buttonGive").val();
+				$('.buttonGive').on('click', function() {
+					var id = $(this).val();
 					$.ajax({
 						data:{'id':id},
 						url: "http://localhost/giveItem",
@@ -49,11 +49,19 @@
 			<table>
 				<tr>
 				<td>
+				<li> Name: Яблоки id: 1 placement_id 1 </li>
+				</td>
+				<td><button class="buttonGive" type="submit" value="1">Выдать товар</button>				</td>
+				<td><button class="buttonRemove" type="submit" value="1">Списать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="1">Изменить местоположение товара</button>				</td>
+				</tr>
+				<tr>
+				<td>
 				<li> Name: Набор инструментов id: 2 placement_id 2 </li>
 				</td>
-				<td><button id="buttonGive"type="submit" value="2">Выдать товар</button>				</td>
-				<td><button id="buttonRemove"type="submit" value="2">Списать товар</button>				</td>
-				<td><button id="buttonChangePlacement"type="submit" value="2">Изменить местоположение товара</button>				</td>
+				<td><button class="buttonGive" type="submit" value="2">Выдать товар</button>				</td>
+				<td><button class="buttonRemove" type="submit" value="2">Списать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="2">Изменить местоположение товара</button>				</td>
 				</tr>
 			</table>
 		</form>
