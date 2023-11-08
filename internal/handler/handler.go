@@ -10,6 +10,7 @@ import (
 	"warehouseWeb/internal/searchStruct"
 	sqlImport "warehouseWeb/internal/sql"
 )
+
 type Order struct {
 	order_name string
 	name       string
@@ -17,6 +18,7 @@ type Order struct {
 	email      string
 	adress     string
 }
+
 // After login - true, before - false
 var access_after_login = false
 
@@ -90,6 +92,48 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func deleteOrder(w http.ResponseWriter, r *http.Request) {
+	if access_after_login {
+
+		//var db *sql.DB
+		//db, err := sqlImport.GetDB()
+		//if err != nil {
+		//	fmt.Println("Error occurred while getting access to database", err.Error())
+		//	return
+		//}
+
+		fileName := "frontend/delete.html"
+
+		//html_change.WriteList(listFileName, res)
+		file_list, err := template.ParseFiles(fileName)
+		// t, err := template.ParseFiles("index.html", "header.html")
+		if err != nil {
+			fmt.Println("Error occurred when parsing html file.", err.Error())
+			return
+		}
+
+		style, err := os.ReadFile("frontend/css/success.css")
+		if err != nil {
+			fmt.Println("Error occured when reading CSS file.")
+			return
+		}
+
+		tmplData := struct {
+			Style template.CSS
+		}{Style: template.CSS(style)}
+
+		_ = file_list.ExecuteTemplate(w, fileName, nil)
+		err = file_list.Execute(w, tmplData)
+		if err != nil {
+			fmt.Println("Error occurred when executing file.", err.Error())
+			return
+		}
+
+	} else {
+		login(w, r)
+		fmt.Println("You are not authorized.")
+	}
+}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -101,6 +145,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		addOrder(w, r)
 	case "/search":
 		viewList(w, r)
+	case "/delete":
+		deleteOrder(w, r)
 	}
 }
 
@@ -251,7 +297,7 @@ func HandleGive(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 1 param - удалилась ли запись
-	// 2 param - ошибка 
+	// 2 param - ошибка
 	_, err = sqlImport.RemoveItem(db, params.Get("id"))
 	if err != nil {
 		fmt.Println("Error occurred while removing item from database", err.Error())
