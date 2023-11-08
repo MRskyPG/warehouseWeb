@@ -10,7 +10,6 @@ import (
 	"warehouseWeb/internal/searchStruct"
 	sqlImport "warehouseWeb/internal/sql"
 )
-
 type Order struct {
 	order_name string
 	name       string
@@ -18,13 +17,8 @@ type Order struct {
 	email      string
 	adress     string
 }
-
 // After login - true, before - false
 var access_after_login = false
-
-func buttonGive(w http.ResponseWriter, r *http.Request) {
-
-}
 
 func viewList(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
@@ -95,6 +89,7 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("You are not authorized.")
 	}
 }
+
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	switch r.URL.Path {
@@ -240,65 +235,6 @@ func addOrder(w http.ResponseWriter, r *http.Request) {
 		} else {
 			return
 		}
-	} else {
-		login(w, r)
-		fmt.Println("You are not authorized.")
-	}
-}
-
-func viewList(w http.ResponseWriter, r *http.Request) {
-	if access_after_login {
-		order_name := r.FormValue("order_name")
-		name := r.FormValue("name")
-		surname := r.FormValue("surname")
-		email := r.FormValue("email")
-		address := r.FormValue("adress")
-
-		var db *sql.DB
-		db, err := sqlImport.GetDB()
-		if err != nil {
-			fmt.Println("Error occurred while getting access to database", err.Error())
-			return
-		}
-
-		fileName := "frontend/search.html"
-		listFileName := "frontend/list.html"
-		// С помощью этого кода я помещаю list.html в search.html, под видом template
-		// https://stackoverflow.com/questions/33984147/golang-embed-html-from-file
-
-		var res *searchStruct.SearchResults
-		if order_name != "" || name != "" || surname != "" || email != "" || address != "" {
-			res = sqlImport.Search(db, order_name, name, surname, email, address)
-		} else {
-			res = searchStruct.New()
-
-		}
-
-		html_change.WriteList(listFileName, res)
-		file_list, err := template.ParseFiles(fileName, listFileName)
-		// t, err := template.ParseFiles("index.html", "header.html")
-		if err != nil {
-			fmt.Println("Error occurred when parsing html file.", err.Error())
-			return
-		}
-
-		style, err := os.ReadFile("frontend/css/success.css")
-		if err != nil {
-			fmt.Println("Error occured when reading CSS file.")
-			return
-		}
-
-		tmplData := struct {
-			Style template.CSS
-		}{Style: template.CSS(style)}
-
-		_ = file_list.ExecuteTemplate(w, fileName, nil)
-		err = file_list.Execute(w, tmplData)
-		if err != nil {
-			fmt.Println("Error occurred when executing file.", err.Error())
-			return
-		}
-
 	} else {
 		login(w, r)
 		fmt.Println("You are not authorized.")

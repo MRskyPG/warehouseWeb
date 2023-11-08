@@ -32,6 +32,7 @@ func copy(source *os.File, destination *os.File)(error) {
                 }
         }
 		return nil
+}
 func WriteListNotFound(fileName string, source *Utils.SearchResults) {
 	f, err := os.OpenFile(fileName, os.O_WRONLY, 0666)
 	if err != nil {
@@ -40,7 +41,8 @@ func WriteListNotFound(fileName string, source *Utils.SearchResults) {
 	}
 
 	if err := os.Truncate(fileName, 0); err != nil {
-		log.Printf("Failed to truncate: %v", err)
+		fmt.Println("Error occurred when truncate file.", err.Error())
+		return
 	}
 	defer f.Close()
 
