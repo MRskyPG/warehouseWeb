@@ -9,6 +9,7 @@ import (
 	"warehouseWeb/internal/html_change"
 	"warehouseWeb/internal/searchStruct"
 	sqlImport "warehouseWeb/internal/sql"
+	"encoding/json"
 )
 
 type Order struct {
@@ -326,7 +327,10 @@ func HandleChange(w http.ResponseWriter, r *http.Request) {
 	}
 	// 1 param - удалилась ли запись
 	// 2 param - ошибка
-	_, err = sqlImport.ChangePlacement(db, params.Get("id"))
+	var pos int
+	pos, err = sqlImport.ChangePlacement(db, params.Get("id"))
+	a, _ := json.Marshal(map[string]int{"position": pos})
+	w.Write(a)
 	if err != nil {
 		fmt.Println("Error occurred while removing item from database", err.Error())
 		return

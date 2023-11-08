@@ -163,26 +163,26 @@ func ListOfExpiredOrders(db *sql.DB, date string) *Utils.SearchResults {
 	return &arr
 }
 
-func ChangePlacement(db *sql.DB, id string) (bool, error) {
+func ChangePlacement(db *sql.DB, id string) (int, error) {
 
 	var int_id int
 	if _, err := fmt.Sscanf(id, "%d", &int_id); err != nil {
-		return false, err
+		return -1, err
 	}
 	str := fmt.Sprintf("select change_placement(%d);", int_id)
 	// сделать возвращение true / false из remove product
 	// true если элемент удален, false иначе
 	rows, _ := db.Query(str)
+	var pos int
 	for rows.Next() {
-		var id int
-		err := rows.Scan(&id)
+		err := rows.Scan(&pos)
 		if err != nil {
-			return false, err
+			return -1, err
 		}
-		if id == -1 {
+		if pos == -1 {
 			html_change.WriteListChangePlaceError("frontend/list.html")
 			break
 		}
 	}
-	return true, nil
+	return pos, nil
 }

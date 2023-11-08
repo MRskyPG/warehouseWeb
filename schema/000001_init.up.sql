@@ -12,7 +12,7 @@ create table if not exists warehouse (
 
 INSERT INTO warehouse (product_id)
 SELECT null
-FROM generate_series(1, 15) AS g (id);
+FROM generate_series(1, 5) AS g (id);
 
 create table if not exists products (
                                         id serial PRIMARY KEY,
@@ -64,6 +64,8 @@ if (pos is not null)
 then
 update warehouse
 set product_id = null where product_id = id_prod;
+update warehouse
+set product_id = id_prod where id_placement = pos;
 update products
 set id_placement = pos where id = id_prod;
 return pos;
