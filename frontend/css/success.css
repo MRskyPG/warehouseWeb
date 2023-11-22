@@ -15,27 +15,138 @@
     text-align: center;
 }
 
+.form_for_success {
+    border: 1px solid black;
+    align-items: center;
+    background-color: white;
+    width: 500px;
+    height: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form_for_add_and_search {
+    border: 1px solid black;
+    align-items: center;
+    background-color: white;
+    width: 700px;
+    height: 500px;
+    padding-top: 30px;
+    margin-left: 150px;
+    margin-right: 50px ;
+    float: left;
+    align-items: center;
+
+}
+
+.form_for_delete {
+    border: 1px solid black;
+    align-items: center;
+    background-color: white;
+    width: 700px;
+    height: 300px;
+    padding-top: 30px;
+    margin-left: 150px;
+    margin-right: 50px;
+    align-items: center;
+    float: left;
+}
+
+label {
+    margin-left: 30px;
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.form_for_menu_add {
+    border: 1px solid black;
+    align-items: center;
+    padding-left: 30px;
+    background-color: white;
+    margin: 0 10px 10px 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttons_menu {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 300px;
+    height: 80px;
+    font-size: 20px;
+    font-family: Arial;
+}
+
+.button_success {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 450px;
+    height: 100px;
+    font-size: 25px;
+    font-family: Arial;
+}
+
 button {
-    background-color: #f1f1f1;
-    color: black;
-    padding: 10px;
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 10px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 200px;
-    height: 50px;
+    height: 60px;
+    font-size: 15px;
+    font-family: Arial;
 }
+
+.button_delete {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 10px;
+    margin: 50px 0;
+    border: none;
+    cursor: pointer;
+    width: 300px;
+    height: 90px;
+    font-size: 23px;
+    font-family: Arial;
+}
+
+
 
 .button_option {
-    background-color: #7E9195;
+    background-color: #04AA9D;
+    color: white;
+    padding: 10px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 300px;
+    height: 80px;
+    font-size: 20px;
+    font-family: Arial;
 }
 
-input[type=text], [type=email] {
-    width: 200px;
+input[type=text], [type=email], [type=date] {
+    font-family: Arial;
+    font-size: 15px;
+    width: 450px;
     height: 50px;
     padding: 12px 20px;
-    margin: 0px auto 20px auto;
+    margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+}
+
+body {
+    background-image: url("/frontend/images/warehouse.png");
 }

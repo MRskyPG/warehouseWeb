@@ -6,51 +6,46 @@
     <style>{{.Style}}</style>
 </head>
 <body>
-<h3>Опции</h3>
-<form>
-    <figure class="figure_buttons">
-        <table>
-            <tr>
-                <td>
-                    <button formaction="/add" >Добавление товара</button>
-                </td>
-                <td>
-                    <button formaction="/search">Выдача товара</button>
-                </td>
-                <td>
-                    <button formaction="/search">Поиск товара</button>
-                </td>
-                <td>
-                    <button formaction="/delete" class="button_option">Списание товара</button>
-                </td>
-                <td>
-                    <button formaction="/search">Изменение месторасположения товара</button>
-                </td>
-                <td>
-                    <button formaction="/login">Выйти</button>
-                </td>
-            </tr>
-        </table>
-    </figure>
+<h1 style="font-size: 40px; font-family: Arial; margin: 10px 0 20px 10px">Опции</h1>
+<form class="form_for_menu_add">
+    <table>
+        <tr>
+            <td>
+                <button formaction="/add" class="buttons_menu">Добавление товара</button>
+            </td>
+            <td>
+                <button formaction="/search" class="buttons_menu">Выдача товара</button>
+            </td>
+            <td>
+                <button formaction="/search" class="buttons_menu">Поиск товара</button>
+            </td>
+            <td>
+                <button formaction="/delete" class="button_option">Списание товара</button>
+            </td>
+            <td>
+                <button formaction="/search" class="buttons_menu">Изменение месторасположения товара</button>
+            </td>
+            <td>
+                <button formaction="/login" class="buttons_menu">Выйти</button>
+            </td>
+        </tr>
+    </table>
 </form>
 
-<figure class="figure_add">
-    <form>
-        <table>
-            <tr>
-                <div>
-                    <td><label for="date"><b>Выберите дату:</b></label></td>
-                    <td><input type="date" id="date" name="date" required></td>
-                </div>
-            </tr>
-            <tr >
-                <div>
-                    <td > <button>Найти товары, доступные для списания</button></td>
-                </div>
-            </tr>
-        </table>
-    </form>
-</figure>
+
+<form class="form_for_delete">
+    <table style="text-align: center">
+        <tr>
+            <div>
+                <td><label for="date"><b>Выберите дату:</b></label></td>
+                <td><input type="date" id="date" name="date" required></td>
+            </div>
+        </tr>
+    </table>
+    <div style="text-align: center">
+        <button class="button_delete">Найти товары, доступные для списания</button>
+    </div>
+</form>
 <div>{{template "list.html"}}</div>
 </body>
 </html>
