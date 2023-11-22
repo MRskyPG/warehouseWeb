@@ -11,21 +11,27 @@
 <body>
 <h1 align="center">Авторизация работника склада фирмы</h1>
 <form action="/submit">
-    <div class="container"  align="center">
-        <label class="uname" for="login"><b>Логин</b></label>
-        <input type="text" placeholder="Enter username" id="login" name="login" required pattern="^[_a-zA-Z0-9\.]+$">
+    <table style="padding-top: 30px">
+    <div align="center">
+        <tr>
+        <td><label class="uname" for="login"><b>Логин</b></label></td>
+        <td><input type="text" placeholder="Введите логин" id="login" name="login" required pattern="^[_a-zA-Z0-9\.]+$"></td>
+        </tr>
     </div>
-    <div class="container"  align="center">
-        <label class="psw" for="password"><b>Пароль</b></label>
-        <input type="password" id="password" placeholder="Enter password" name="password" required pattern="^[_a-zA-Z0-9\.]+$">
+    <div  align="center">
+        <tr>
+        <td><label class="psw" for="password"><b>Пароль</b></label></td>
+        <td><input type="password" id="password" placeholder="Введите пароль" name="password" required pattern="^[_a-zA-Z0-9\.]+$"></td>
+        </tr>
     </div>
-    <div class="container" align="center">
+    </table>
+    <div style="text-align: center">
         <button>Авторизация</button>
     </div>
         <!-- <label>
              <input type="checkbox" checked="checked" name="remember"> Remember me
          </label> -->
-    </div>
+
 
 </form>
 </body>

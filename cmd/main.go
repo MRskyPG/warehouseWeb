@@ -21,6 +21,9 @@ func main() {
 	http.HandleFunc("/giveItem", handler.HandleGive)
 	http.HandleFunc("/removeItem", handler.HandleRemove)
 	http.HandleFunc("/changeItemPlacement", handler.HandleChange)
+	http.Handle("/frontend/images/", http.StripPrefix("/frontend/images/",
+		http.FileServer(http.Dir("./frontend/images/"))))
+
 	//fs := http.FileServer(http.Dir("./internal/frontend"))
 
 	go func() {
