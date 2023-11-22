@@ -72,7 +72,6 @@ func WriteListExpired(fileName string, source *Utils.SearchResults) {
 
 	tabs := ""
 	_, err = f.WriteString(tabs + "<html>\n")
-
 	tabs = tabs + "\t"
 
 	_, _ = f.WriteString(tabs + "<ol>\n")
@@ -86,7 +85,7 @@ func WriteListExpired(fileName string, source *Utils.SearchResults) {
 	for _, pp := range *source {
 		_, _ = f.WriteString(tabs + "<tr>\n")
 		_, _ = f.WriteString(tabs + "<td>\n")
-		str := fmt.Sprintf("Товар: %s. Клиент: %s %s. Номер места на складе: %d", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
+		str := fmt.Sprintf("<p style=\"width: 800px; height=100px; background-color: white;\">Товар: %s. Клиент: %s %s. Номер места на складе: %d </p>", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
 		_, _ = f.WriteString(tabs + "<li> " + str + " </li>\n")
 		_, _ = f.WriteString(tabs + "</td>\n")
 		_, _ = f.WriteString(tabs + "</tr>\n")
@@ -128,7 +127,7 @@ func WriteListChangePlaceError(fileName string) {
 	_, err = f.WriteString(tabs + "<html>\n")
 	tabs = tabs + "\t"
 
-	_, _ = f.WriteString(tabs + "<h1>Не удалось изменить месторасположение товара. Полный склад.</h1>\n")
+	_, _ = f.WriteString(tabs + "<h1 style=\"font-size: 40px; font-family: Arial; margin: 10px 0 20px 10px\">Не удалось изменить месторасположение товара. Полный склад.</h1>\n")
 
 	tabs = deleteLastChar(tabs)
 	_, _ = f.WriteString(tabs + "</html>\n")
@@ -151,7 +150,7 @@ func WriteListNotFound(fileName string, source *Utils.SearchResults) {
 	_, err = f.WriteString(tabs + "<html>\n")
 	tabs = tabs + "\t"
 
-	_, _ = f.WriteString(tabs + "<h1>Товары не найдены.</h1>\n")
+	_, _ = f.WriteString(tabs + "<h1 style=\"font-size: 40px; font-family: Arial; margin: 10px 0 20px 10px\">Товары не найдены.</h1>\n")
 
 	tabs = deleteLastChar(tabs)
 	_, _ = f.WriteString(tabs + "</html>\n")
@@ -207,12 +206,13 @@ func createTable(f *os.File, source *Utils.SearchResults, tabs string) {
 	for _, pp := range *source {
 		_, _ = f.WriteString(tabs + "<tr>\n")
 		_, _ = f.WriteString(tabs + "<td>\n")
-		str := fmt.Sprintf("Товар: %s. Клиент: %s %s. Номер места на складе: %d", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
+		str := fmt.Sprintf("<p style=\"width: 500px; height=100px; background-color: white;\">Товар: %s. Клиент: %s %s. Номер места на складе: %d</p>", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
 		_, _ = f.WriteString(tabs + "<li> " + str + " </li>\n")
 		_, _ = f.WriteString(tabs + "</td>\n")
 		addButtons(f, tabs, "Выдать товар", "\"buttonGive\"", pp.IdUniq())
 		addButtons(f, tabs, "Изменить местоположение товара", "\"buttonChangePlacement\"", pp.IdUniq())
 		_, _ = f.WriteString(tabs + "</tr>\n")
+
 	}
 
 	tabs = deleteLastChar(tabs)

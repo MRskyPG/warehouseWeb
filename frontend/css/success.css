@@ -150,3 +150,8 @@ input[type=text], [type=email], [type=date] {
 body {
     background-image: url("/frontend/images/warehouse.png");
 }
+
+p {
+    font-family: Arial;
+    font-size: 25px;
+}
