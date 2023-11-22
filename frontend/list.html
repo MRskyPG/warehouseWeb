@@ -7,10 +7,8 @@
 			data:{'id':id},
 			url: "http://localhost/giveItem",
 			method: "GET",
-			success: function(data) {
-				$("#response").html(data);
-			},
 		});
+		alert("Товар выдан.");
 	});
 });
 </script>
@@ -24,9 +22,16 @@
 			method: "GET",
 			success: function(data) {
 				$("#response").html(data);
-			},
-			
+				id = data.position;
+			}
 		});
+		var text = "smth";
+		if (id == -1) {
+			text = "Нет свободного места для перемещения товара.";
+		} else {
+			text = "Товар перемещен.";
+		}
+		alert(text);
 	});
 });
 </script>
@@ -35,24 +40,38 @@
 			<table>
 				<tr>
 				<td>
-				<li> Name: Яблоки id: 1 placement_id 1 </li>
+				<li> Товар: Яблоки. Клиент: Михаил Рогальский. Номер места на складе: 1 </li>
 				</td>
 				<td><button class="buttonGive" type="submit" value="1">Выдать товар</button>				</td>
 				<td><button class="buttonChangePlacement" type="submit" value="1">Изменить местоположение товара</button>				</td>
 				</tr>
 				<tr>
 				<td>
-				<li> Name: Набор инструментов id: 2 placement_id 2 </li>
+				<li> Товар: Набор инструментов. Клиент: Михаил Рогальский. Номер места на складе: 2 </li>
 				</td>
 				<td><button class="buttonGive" type="submit" value="2">Выдать товар</button>				</td>
 				<td><button class="buttonChangePlacement" type="submit" value="2">Изменить местоположение товара</button>				</td>
 				</tr>
 				<tr>
 				<td>
-				<li> Name: Перфоратор id: 3 placement_id 3 </li>
+				<li> Товар: Перфоратор. Клиент: Михаил Рогальский. Номер места на складе: 3 </li>
 				</td>
 				<td><button class="buttonGive" type="submit" value="3">Выдать товар</button>				</td>
 				<td><button class="buttonChangePlacement" type="submit" value="3">Изменить местоположение товара</button>				</td>
+				</tr>
+				<tr>
+				<td>
+				<li> Товар: ф. Клиент: Михаил ы. Номер места на складе: 5 </li>
+				</td>
+				<td><button class="buttonGive" type="submit" value="5">Выдать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="5">Изменить местоположение товара</button>				</td>
+				</tr>
+				<tr>
+				<td>
+				<li> Товар: ф. Клиент: Михаил ы. Номер места на складе: 4 </li>
+				</td>
+				<td><button class="buttonGive" type="submit" value="10">Выдать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="10">Изменить местоположение товара</button>				</td>
 				</tr>
 			</table>
 		</form>
