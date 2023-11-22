@@ -1,31 +1,58 @@
 <html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script><script type="text/javascript">
+	$(document).ready(function() {
+	$('.buttonGive').on('click', function() {
+		var id = $(this).val();
+		$.ajax({
+			data:{'id':id},
+			url: "http://localhost/giveItem",
+			method: "GET",
+			success: function(data) {
+				$("#response").html(data);
+			},
+		});
+	});
+});
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+	$(".buttonChangePlacement").on('click', function() {
+		var id = $(this).val();
+		$.ajax({
+			data:{'id':id},
+			url: "http://localhost/changeItemPlacement",
+			method: "GET",
+			success: function(data) {
+				$("#response").html(data);
+			},
+			
+		});
+	});
+});
+</script>
 	<ol>
 		<form>
 			<table>
 				<tr>
 				<td>
-				<li> Товар: Яблоки. Клиент: Михаил Рогальский. Номер места на складе: 1 </li>
+				<li> Name: Яблоки id: 1 placement_id 1 </li>
 				</td>
+				<td><button class="buttonGive" type="submit" value="1">Выдать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="1">Изменить местоположение товара</button>				</td>
 				</tr>
 				<tr>
 				<td>
-				<li> Товар: Набор инструментов. Клиент: Михаил Рогальский. Номер места на складе: 2 </li>
+				<li> Name: Набор инструментов id: 2 placement_id 2 </li>
 				</td>
+				<td><button class="buttonGive" type="submit" value="2">Выдать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="2">Изменить местоположение товара</button>				</td>
 				</tr>
 				<tr>
 				<td>
-				<li> Товар: Перфоратор. Клиент: Михаил Рогальский. Номер места на складе: 3 </li>
+				<li> Name: Перфоратор id: 3 placement_id 3 </li>
 				</td>
-				</tr>
-				<tr>
-				<td>
-				<li> Товар: Велосипед. Клиент: Андрей Дегтярев. Номер места на складе: 4 </li>
-				</td>
-				</tr>
-				<tr>
-				<td>
-				<h3>Выведенные товары были списаны.</h3>
-				</td>
+				<td><button class="buttonGive" type="submit" value="3">Выдать товар</button>				</td>
+				<td><button class="buttonChangePlacement" type="submit" value="3">Изменить местоположение товара</button>				</td>
 				</tr>
 			</table>
 		</form>
