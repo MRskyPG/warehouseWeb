@@ -12,7 +12,7 @@ create table if not exists warehouse (
 
 INSERT INTO warehouse (product_id)
 SELECT null
-FROM generate_series(1, 5) AS g (id);
+FROM generate_series(1, 15) AS g (id);
 
 create table if not exists products (
                                         id serial PRIMARY KEY,
@@ -184,3 +184,7 @@ call insert_product('Яблоки', 'Михаил', 'Рогальский', 'у�
 call insert_product('Набор инструментов', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
 call insert_product('Перфоратор', 'Михаил', 'Рогальский', 'ул.Карла Маркса 53, Новосибирск', 'example@gmail.com');
 call insert_product('Велосипед', 'Андрей', 'Дегтярев', 'ул.Карла Маркса 40, Новосибирск', 'other_example@gmail.com');
+call insert_product('Манго', 'Иван', 'Федоров', 'ул.Ленина 10, Новосибирск', 'postivan@gmail.com');
+call insert_product('Строительная краска', 'Ольга', 'Иванова', 'ул.Добролюбова 9, Новосибирск', 'olga19788@mail.ru');
+call insert_product('Ролики', 'Анастасия', 'Маликова', 'ул.Кошурникова 87, Новосибирск', 'nastytastiaa@gmail.com');
+call insert_product('Видеокамера', 'Егор', 'Шкред', 'ул.Большевисткая 7, Новосибирск', 'egorshkredddd@gmail.com');
