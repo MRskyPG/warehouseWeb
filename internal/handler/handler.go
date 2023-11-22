@@ -23,6 +23,7 @@ type Order struct {
 // After login - true, before - false
 var access_after_login = false
 
+
 func viewList(w http.ResponseWriter, r *http.Request) {
 	if access_after_login {
 		var order Order
@@ -58,7 +59,7 @@ func viewList(w http.ResponseWriter, r *http.Request) {
 				html_change.WriteList(listFileName, res)
 			}
 		} else {
-			res = searchStruct.New()
+			res = sqlImport.Search(db, order.order_name, order.name, order.surname, order.email, order.adress)
 			html_change.WriteList(listFileName, res)
 		}
 
@@ -307,16 +308,17 @@ func HandleGive(w http.ResponseWriter, r *http.Request) {
 	}
 	// 1 param - удалилась ли запись
 	// 2 param - ошибка
+	a, _ := json.Marshal(map[string]int{"position": 1})
+	w.Write(a)
 	_, err = sqlImport.RemoveItem(db, params.Get("id"))
 	if err != nil {
 		fmt.Println("Error occurred while removing item from database", err.Error())
 		return
 	}
+	viewList(w, r)
 }
 
-func HandleRemove(w http.ResponseWriter, r *http.Request) {
-	fmt.Print("remove\n")
-}
+
 func HandleChange(w http.ResponseWriter, r *http.Request) {
 	params := r.URL.Query()
 	var db *sql.DB
@@ -329,10 +331,12 @@ func HandleChange(w http.ResponseWriter, r *http.Request) {
 	// 2 param - ошибка
 	var pos int
 	pos, err = sqlImport.ChangePlacement(db, params.Get("id"))
-	a, _ := json.Marshal(map[string]int{"position": pos})
+	
+	a, _ := json.Marshal(map[string]int{"res": pos})
 	w.Write(a)
 	if err != nil {
 		fmt.Println("Error occurred while removing item from database", err.Error())
 		return
 	}
+	viewList(w, r)
 }

@@ -6,10 +6,8 @@
 			data:{'id':id},
 			url: "http://localhost/giveItem",
 			method: "GET",
-			success: function(data) {
-				$("#response").html(data);
-			},
 		});
+		alert("Normalin");
 	});
 });
 </script>
@@ -23,9 +21,10 @@
 			method: "GET",
 			success: function(data) {
 				$("#response").html(data);
-			},
-			
+				id = data.position;
+			}
 		});
+		alert(id);
 	});
 });
 </script>
