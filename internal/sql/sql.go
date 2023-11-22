@@ -100,13 +100,16 @@ func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, em
 	var id int
 	var place int
 	var name string
+	var cl_name_v string
+	var cl_surname_v string
+	var date string
 
 	var res Utils.SearchRes
 	var arr Utils.SearchResults
 
 	defer rows.Close()
 	for rows.Next() {
-		err = rows.Scan(&id, &place, &name)
+		err = rows.Scan(&id, &place, &name, &cl_name_v, &cl_surname_v, &date)
 		if err != nil {
 			fmt.Println("Error occurred when scanning", err.Error())
 			return nil
@@ -114,7 +117,10 @@ func Search(db *sql.DB, order_name string, cl_name string, cl_surname string, em
 		res.SetIdUniq(id)
 		res.SetPlace(place)
 		res.SetName(name)
-		arr.Add(id, place, name)
+		res.SetClName(cl_name_v)
+		res.SetSurname(cl_surname_v)
+		res.SetDate(date)
+		arr.Add(id, place, name, cl_name_v, cl_surname_v, date)
 	}
 	return &arr
 }
@@ -142,13 +148,16 @@ func ListOfExpiredOrders(db *sql.DB, date string) *Utils.SearchResults {
 	var id int
 	var place int
 	var name string
+	var cl_name_v string
+	var cl_surname_v string
+	var date_v string
 
 	var res Utils.SearchRes
 	var arr Utils.SearchResults
 
 	defer rows.Close()
 	for rows.Next() {
-		err = rows.Scan(&id, &place, &name)
+		err = rows.Scan(&id, &place, &name, &cl_name_v, &cl_surname_v, &date_v)
 		if err != nil {
 			fmt.Println("Error occurred when scanning", err.Error())
 			return nil
@@ -158,7 +167,10 @@ func ListOfExpiredOrders(db *sql.DB, date string) *Utils.SearchResults {
 		res.SetIdUniq(id)
 		res.SetPlace(place)
 		res.SetName(name)
-		arr.Add(id, place, name)
+		res.SetClName(cl_name_v)
+		res.SetSurname(cl_surname_v)
+		res.SetDate(date_v)
+		arr.Add(id, place, name, cl_name_v, cl_surname_v, date_v)
 	}
 	return &arr
 }

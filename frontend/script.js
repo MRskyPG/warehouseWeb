@@ -7,7 +7,7 @@
 			url: "http://localhost/giveItem",
 			method: "GET",
 		});
-		alert("Normalin");
+		alert("Товар выдан.");
 	});
 });
 </script>
@@ -24,7 +24,13 @@
 				id = data.position;
 			}
 		});
-		alert(id);
+		var text = "smth";
+		if (id == -1) {
+			text = "Нет свободного места для перемещения товара.";
+		} else {
+			text = "Товар перемещен.";
+		}
+		alert(text);
 	});
 });
 </script>

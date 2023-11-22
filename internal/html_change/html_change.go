@@ -86,7 +86,7 @@ func WriteListExpired(fileName string, source *Utils.SearchResults) {
 	for _, pp := range *source {
 		_, _ = f.WriteString(tabs + "<tr>\n")
 		_, _ = f.WriteString(tabs + "<td>\n")
-		str := fmt.Sprintf("Name: %s id: %d placement_id %d", pp.Name(), pp.IdUniq(), pp.Place())
+		str := fmt.Sprintf("Товар: %s. Клиент: %s %s. Номер места на складе: %d", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
 		_, _ = f.WriteString(tabs + "<li> " + str + " </li>\n")
 		_, _ = f.WriteString(tabs + "</td>\n")
 		_, _ = f.WriteString(tabs + "</tr>\n")
@@ -207,7 +207,7 @@ func createTable(f *os.File, source *Utils.SearchResults, tabs string) {
 	for _, pp := range *source {
 		_, _ = f.WriteString(tabs + "<tr>\n")
 		_, _ = f.WriteString(tabs + "<td>\n")
-		str := fmt.Sprintf("Name: %s id: %d placement_id %d", pp.Name(), pp.IdUniq(), pp.Place())
+		str := fmt.Sprintf("Товар: %s. Клиент: %s %s. Номер места на складе: %d", pp.Name(), pp.ClName(), pp.Surname(), pp.Place())
 		_, _ = f.WriteString(tabs + "<li> " + str + " </li>\n")
 		_, _ = f.WriteString(tabs + "</td>\n")
 		addButtons(f, tabs, "Выдать товар", "\"buttonGive\"", pp.IdUniq())

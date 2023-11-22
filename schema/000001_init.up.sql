@@ -139,9 +139,9 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE function select_products_expired(expire_date date) RETURNS table (id_uniq int, id_placement int, name text) 
+CREATE OR REPLACE function select_products_expired(expire_date date) RETURNS table (id_uniq int, id_placement int, name text, client_name text, client_surname text, reg_date date) 
     AS $$
-select pd.id, pd.id_placement, pd.product_name from products as pd where ((expire_date - interval '1 month') >= registration_date);
+select pd.id, pd.id_placement, pd.product_name, cl.name, cl.surname, pd.registration_date from (products as pd join clients as cl on pd.client_id = cl.id) where ((expire_date - interval '1 month') >= registration_date);
 $$ LANGUAGE sql;
 
 
@@ -152,9 +152,9 @@ CREATE OR REPLACE FUNCTION search(id_prod int default -1, id_place int default -
                                   prod_name text default 'not_exist', cl_name text default 'not_exist',
                                   cl_surname text default 'not_exist', cl_email text default 'not_exist',
                                   dp_address text default 'not_exist')
-    RETURNS table (id_uniq int, id_placement int, name text) 
+    RETURNS table (id_uniq int, id_placement int, name text, client_name text, client_surname text, reg_date date) 
 AS $$
-select pd.id, pd.id_placement, pd.product_name from (products as pd join clients as cl on pd.client_id = cl.id)
+select pd.id, pd.id_placement, pd.product_name, cl.name, cl.surname, pd.registration_date from (products as pd join clients as cl on pd.client_id = cl.id)
 where (pd.id_product = id_prod or id_prod = -1 )and
     (pd.id_placement = id_place or id_place = -1) and
     (pd.product_name = prod_name or prod_name = 'not_exist') and
