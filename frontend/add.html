@@ -9,11 +9,11 @@
 <h1 style="font-size: 40px; font-family: Arial; margin: 10px 0 20px 10px">Опции</h1>
 <script type="text/javascript">
 var AddEntityAlert = function() {
-    var order_name = document.getElementById("order_name").value;
-    var name = document.getElementById("name").value;
-    var surname = document.getElementById("surname").value;
-    var email = document.getElementById("email").value;
-    var adress = document.getElementById("adress").value;
+    const order_name = document.getElementById("order_name").value;
+    const name = document.getElementById("name").value;
+    const surname = document.getElementById("surname").value;
+    const email = document.getElementById("email").value;
+    const adress = document.getElementById("adress").value;
 	if (order_name == "" || name == "" || surname == "" || email == "" || adress == ""){
         alert("Товар не добавлен!");
     }
